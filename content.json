@@ -1,0 +1,213 @@
+{
+  "site": {
+    "name": "AYAA",
+    "tagline": "Photographie Documentaire & Street",
+    "copyright": "© 2026 AYAA — Tous droits réservés",
+    "nav": [
+      { "label": "Accueil", "href": "index.html" },
+      { "label": "Galerie", "href": "galerie.html" },
+      { "label": "Démarche", "href": "demarche.html" },
+      { "label": "Parcours", "href": "parcours.html" },
+      { "label": "Contact", "href": "contact.html" }
+    ]
+  },
+
+  "accueil": {
+    "hero": {
+      "image": "assets/img/accueil/hero.jpg",
+      "watermark": "DOCUMENTAIRE",
+      "name": "AYAA",
+      "subtitle": "Photographie Documentaire & Street",
+      "tags": ["Street", "Portrait", "Reportage", "Studio"]
+    },
+    "featured": {
+      "label": "Sélection",
+      "title": "TRAVAUX",
+      "titleAccent": "RÉCENTS",
+      "linkText": "Voir tout",
+      "items": [
+        { "image": "assets/img/accueil/featured1.jpg", "title": "Série TFE", "category": "TFE" },
+        { "image": "assets/img/accueil/featured2.jpg", "title": "Portrait Mode", "category": "Portrait" },
+        { "image": "assets/img/accueil/featured3.jpg", "title": "Campagne Pub", "category": "Marketing" },
+        { "image": "assets/img/accueil/featured4.jpg", "title": "Reportage Terrain", "category": "Reportage" }
+      ]
+    },
+    "intro": {
+      "label": "À propos",
+      "quote": "« Capturer le réel dans sa forme la plus brute, là où le quotidien devient récit. »",
+      "text": "Photographe documentaire et de rue, je m'intéresse aux histoires que le monde urbain raconte quand personne ne regarde. Mon travail oscille entre le portrait intime, le reportage de terrain et l'image publicitaire — toujours avec une approche directe, sans filtre.",
+      "buttonText": "Ma démarche",
+      "buttonLink": "demarche.html",
+      "image": "assets/img/accueil/intro.jpg",
+      "imageAlt": "Portrait — Ayaa"
+    }
+  },
+
+  "galerie": {
+    "header": {
+      "label": "Portfolio",
+      "title": "GALERIE",
+      "watermark": "GALERIE",
+      "description": "Travaux personnels, commandes et reportages — un flux mélangé de mon regard sur le monde."
+    },
+    "filters": [
+      { "id": "all", "label": "Tout" },
+      { "id": "tfe", "label": "TFE" },
+      { "id": "marketing", "label": "Marketing / Pub" },
+      { "id": "portrait", "label": "Portrait & Nature Morte" },
+      { "id": "street", "label": "Street Photo" },
+      { "id": "reportage", "label": "Reportage" }
+    ],
+    "items": [
+      { "image": "assets/img/tfe/tfe1.jpg", "title": "Série TFE — I", "category": "tfe", "categoryLabel": "TFE" },
+      { "image": "assets/img/tfe/tfe2.jpg", "title": "Série TFE — II", "category": "tfe", "categoryLabel": "TFE" },
+      { "image": "assets/img/tfe/tfe3.jpg", "title": "Série TFE — III", "category": "tfe", "categoryLabel": "TFE" },
+      { "image": "assets/img/tfe/tfe4.jpg", "title": "Série TFE — IV", "category": "tfe", "categoryLabel": "TFE" },
+      { "image": "assets/img/tfe/tfe5.jpg", "title": "Série TFE — V", "category": "tfe", "categoryLabel": "TFE" },
+      { "image": "assets/img/tfe/tfe6.jpg", "title": "Série TFE — VI", "category": "tfe", "categoryLabel": "TFE" },
+
+      { "image": "assets/img/marketing/marketing1.jpg", "title": "Campagne I", "category": "marketing", "categoryLabel": "Marketing / Pub" },
+      { "image": "assets/img/marketing/marketing2.jpg", "title": "Campagne II", "category": "marketing", "categoryLabel": "Marketing / Pub" },
+      { "image": "assets/img/marketing/marketing3.jpg", "title": "Campagne III", "category": "marketing", "categoryLabel": "Marketing / Pub" },
+      { "image": "assets/img/marketing/marketing4.jpg", "title": "Campagne IV", "category": "marketing", "categoryLabel": "Marketing / Pub" },
+      { "image": "assets/img/marketing/marketing5.jpg", "title": "Campagne V", "category": "marketing", "categoryLabel": "Marketing / Pub" },
+
+      { "image": "assets/img/portrait/portrait1.jpg", "title": "Portrait Mode — I", "category": "portrait", "categoryLabel": "Portrait" },
+      { "image": "assets/img/portrait/portrait2.jpg", "title": "Portrait Mode — II", "category": "portrait", "categoryLabel": "Portrait" },
+      { "image": "assets/img/portrait/natureMorte1.jpg", "title": "Nature Morte — I", "category": "portrait", "categoryLabel": "Nature Morte" },
+      { "image": "assets/img/portrait/natureMorte2.jpg", "title": "Nature Morte — II", "category": "portrait", "categoryLabel": "Nature Morte" },
+      { "image": "assets/img/portrait/portrait3.jpg", "title": "Portrait Mode — III", "category": "portrait", "categoryLabel": "Portrait" },
+
+      { "image": "assets/img/street/street1.jpg", "title": "Street — I", "category": "street", "categoryLabel": "Street Photo" },
+      { "image": "assets/img/street/street2.jpg", "title": "Street — II", "category": "street", "categoryLabel": "Street Photo" },
+      { "image": "assets/img/street/street3.jpg", "title": "Street — III", "category": "street", "categoryLabel": "Street Photo" },
+      { "image": "assets/img/street/street4.jpg", "title": "Street — IV", "category": "street", "categoryLabel": "Street Photo" },
+      { "image": "assets/img/street/street5.jpg", "title": "Street — V", "category": "street", "categoryLabel": "Street Photo" },
+
+      { "image": "assets/img/reportage/reportage1.jpg", "title": "Reportage — I", "category": "reportage", "categoryLabel": "Reportage" },
+      { "image": "assets/img/reportage/reportage2.jpg", "title": "Reportage — II", "category": "reportage", "categoryLabel": "Reportage" },
+      { "image": "assets/img/reportage/reportage3.jpg", "title": "Reportage — III", "category": "reportage", "categoryLabel": "Reportage" },
+      { "image": "assets/img/reportage/reportage4.jpg", "title": "Reportage — IV", "category": "reportage", "categoryLabel": "Reportage" },
+
+      { "image": "assets/img/reportage/video1.jpg", "title": "Reportage Vidéo — I", "category": "reportage", "categoryLabel": "Reportage Vidéo", "type": "video", "videoUrl": "#" },
+      { "image": "assets/img/reportage/video2.jpg", "title": "Reportage Vidéo — II", "category": "reportage", "categoryLabel": "Reportage Vidéo", "type": "video", "videoUrl": "#" }
+    ]
+  },
+
+  "demarche": {
+    "header": {
+      "label": "Approche",
+      "title": "DÉMARCHE",
+      "titleAccent": "ARTISTIQUE",
+      "watermark": "VISION",
+      "description": "Comprendre le regard avant l'image — pourquoi et comment je photographie."
+    },
+    "blocks": [
+      {
+        "label": "01 — Approche",
+        "title": "LE RÉEL COMME MATIÈRE PREMIÈRE",
+        "paragraphs": [
+          "Mon travail photographique part d'une conviction : le réel n'a pas besoin d'être embelli pour être puissant. Je cherche dans la rue, dans les visages, dans les situations du quotidien, cette tension entre le banal et l'extraordinaire qui fait la force de l'image documentaire.",
+          "Chaque série naît d'une immersion. Je ne photographie pas de l'extérieur — je m'inscris dans le contexte, je prends le temps de comprendre les espaces et les personnes avant de déclencher. Cette patience est au coeur de ma pratique."
+        ],
+        "image": "assets/img/demarche/approche.jpg",
+        "imageAlt": "Approche documentaire",
+        "reverse": false
+      },
+      {
+        "label": "02 — Le Portrait",
+        "title": "L'INTIME DANS LE REGARD",
+        "paragraphs": [
+          "Le portrait est pour moi un acte de confiance. Qu'il soit posé en studio ou saisi sur le vif dans la rue, il raconte toujours deux histoires : celle du sujet et celle de la relation qui s'établit entre nous au moment de la prise de vue.",
+          "En mode, je cherche à dépasser la surface esthétique pour atteindre quelque chose de plus brut, de plus vrai. Le vêtement devient un langage, mais c'est le regard qui fait la photo."
+        ],
+        "image": "assets/img/demarche/portrait.jpg",
+        "imageAlt": "Portrait mode",
+        "reverse": true
+      },
+      {
+        "label": "03 — Reportage",
+        "title": "TÉMOIGNER DU TERRAIN",
+        "paragraphs": [
+          "Le reportage photo est l'extension naturelle de ma pratique street. Sur le terrain, l'image fixe et la vidéo se complètent pour construire un récit plus complet. Je documente des réalités souvent invisibles, avec le souci constant de respecter les personnes et les contextes que je traverse.",
+          "Chaque reportage est une immersion — parfois longue — qui produit un corpus d'images pensé comme un ensemble cohérent, pas une collection de clichés isolés."
+        ],
+        "image": "assets/img/demarche/reportage.jpg",
+        "imageAlt": "Reportage terrain",
+        "reverse": false
+      }
+    ],
+    "quote": {
+      "text": "« La photographie documentaire ne montre pas le monde tel qu'il est — elle montre le monde tel qu'on choisit de le regarder. »",
+      "author": "— Ayaa"
+    },
+    "values": [
+      {
+        "title": "AUTHENTICITÉ",
+        "text": "Pas de mise en scène artificielle. Le réel brut est ma matière première — je capture ce qui existe, tel que ça existe."
+      },
+      {
+        "title": "IMMERSION",
+        "text": "Chaque projet commence par du temps passé sur le terrain. Comprendre avant de photographier, écouter avant de cadrer."
+      },
+      {
+        "title": "RÉCIT",
+        "text": "Une image seule ne suffit pas. Je pense mes séries comme des narrations visuelles, où chaque photo nourrit l'ensemble."
+      }
+    ]
+  },
+
+  "parcours": {
+    "header": {
+      "label": "Curriculum",
+      "title": "PARCOURS",
+      "watermark": "PARCOURS",
+      "description": "Formation, expériences et projets qui ont façonné mon regard photographique."
+    },
+    "timeline": [
+      {
+        "type": "Formation",
+        "date": "2025",
+        "title": "TFE — Projet de fin d'études",
+        "subtitle": "Saint Luc Secondaire",
+        "description": ""
+      },
+      {
+        "type": "Formation",
+        "date": "2024 — 2025",
+        "title": "Études en photographie",
+        "subtitle": "Saint Luc Secondaire",
+        "description": ""
+      },
+      {
+        "type": "Stage",
+        "date": "2023—2024",
+        "title": "Photographe — Technique et Observation",
+        "subtitle": "Photographe — Moustache",
+        "description": ""
+      }
+    ]
+  },
+
+  "contact": {
+    "header": {
+      "label": "Échangeons",
+      "title": "CONTACT",
+      "watermark": "CONTACT",
+      "description": "Un projet, une collaboration ou simplement envie d'échanger — n'hésitez pas."
+    },
+    "info": {
+      "title": "PARLONS DE VOTRE PROJET",
+      "text": "Que ce soit pour une commande photographique, une collaboration artistique, un reportage ou simplement pour discuter de photographie — je suis disponible.",
+      "details": [
+        { "icon": "mail", "label": "Email", "value": "contact@ayaa.fr" },
+        { "icon": "location", "label": "Localisation", "value": "Belgique" },
+        { "icon": "instagram", "label": "Instagram", "value": "@ayaa.photo" }
+      ]
+    },
+    "form": {
+      "submitText": "Envoyer",
+      "successMessage": "Message envoyé avec succès. Je vous répondrai dans les plus brefs délais."
+    }
+  }
+}
