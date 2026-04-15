@@ -26,10 +26,10 @@
       "titleAccent": "RÉCENTS",
       "linkText": "Voir tout",
       "items": [
-        { "image": "assets/img/accueil/featured1.jpg", "title": "Série TFE", "category": "TFE" },
+        { "image": "assets/img/tfe/tfe1.jpg", "title": "Série TFE", "category": "TFE" },
         { "image": "assets/img/accueil/featured2.jpg", "title": "Portrait Mode", "category": "Portrait" },
         { "image": "assets/img/accueil/featured3.jpg", "title": "Campagne Pub", "category": "Marketing" },
-        { "image": "assets/img/accueil/featured4.jpg", "title": "Reportage Terrain", "category": "Reportage" }
+        { "image": "assets/img/street/street1.jpg", "title": "Street Photo", "category": "Street" }
       ]
     },
     "intro": {
@@ -170,21 +170,21 @@
         "date": "2025",
         "title": "TFE — Projet de fin d'études",
         "subtitle": "Saint Luc Secondaire",
-        "description": ""
+        "description": "[ A COMPLETER ]"
       },
       {
         "type": "Formation",
         "date": "2024 — 2025",
         "title": "Études en photographie",
         "subtitle": "Saint Luc Secondaire",
-        "description": ""
+        "description": "[ A COMPLETER ]"
       },
       {
         "type": "Stage",
         "date": "2023—2024",
         "title": "Photographe — Technique et Observation",
         "subtitle": "Photographe — Moustache",
-        "description": ""
+        "description": "[ A COMPLETER ]"
       }
     ]
   },
@@ -200,9 +200,9 @@
       "title": "PARLONS DE VOTRE PROJET",
       "text": "Que ce soit pour une commande photographique, une collaboration artistique, un reportage ou simplement pour discuter de photographie — je suis disponible.",
       "details": [
-        { "icon": "mail", "label": "Email", "value": "contact@ayaa.fr" },
+        { "icon": "mail", "label": "Email", "value": "aya.erraji09@gmail.com" },
         { "icon": "location", "label": "Localisation", "value": "Belgique" },
-        { "icon": "instagram", "label": "Instagram", "value": "@ayaa.photo" }
+        { "icon": "instagram", "label": "Instagram", "value": "@ayaa.phto" }
       ]
     },
     "form": {

@@ -21,6 +21,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderPage(page);
     renderFooter();
 
+    // Fallback placeholder pour les images manquantes
+    document.querySelectorAll('img').forEach(img => {
+        img.addEventListener('error', function () {
+            if (!this.dataset.fallback) {
+                this.dataset.fallback = '1';
+                this.src = 'assets/img/placeholder.svg';
+            }
+        });
+    });
+
     requestAnimationFrame(() => {
         document.body.classList.add('loaded');
     });
