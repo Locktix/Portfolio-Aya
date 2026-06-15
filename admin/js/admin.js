@@ -590,6 +590,7 @@ function renderGalerie(c) {
     </div>
     <input type="file" id="upload-input" accept="image/*" multiple style="display:none;">
     <div class="upload-progress" id="upload-progress"></div>
+    <button class="btn btn-ghost btn-sm" id="btn-import-existing" style="margin-top:12px;">⟳ Importer les images déjà sur le serveur (FTP)</button>
 
     <hr class="divider">
     <div class="block-heading" id="gallery-heading">Photos (${g.items.length}) — glisser pour réordonner</div>
@@ -610,7 +611,45 @@ function renderGalerie(c) {
 
   renderGalleryGrid();
   setupUploadZone();
+  document.getElementById('btn-import-existing').onclick = importExistingImages;
   attachSave();
+}
+
+// Enregistre dans la galerie les fichiers présents sur le serveur (déposés par
+// FTP) mais absents de content.json. Ne touche qu'aux catégories de galerie
+// (ignore les dossiers système accueil/demarche).
+async function importExistingImages() {
+  let data;
+  try {
+    data = await apiFetch('list_all_images');
+  } catch (e) {
+    showToast('Erreur : ' + e.message, 'error');
+    return;
+  }
+  const cats        = data.categories || {};
+  const galleryIds  = new Set(galleryFilters().map(f => f.id));
+  const existing    = new Set(content.galerie.items.map(it => it.image));
+  let added = 0;
+
+  Object.keys(cats).forEach(cat => {
+    if (!galleryIds.has(cat)) return; // dossier hors galerie (accueil, demarche, ou sans filtre)
+    cats[cat].forEach(path => {
+      if (existing.has(path)) return;
+      const title = path.split('/').pop().replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
+      content.galerie.items.push({ image: path, title, category: cat, categoryLabel: labelForCategory(cat) });
+      existing.add(path);
+      added++;
+    });
+  });
+
+  if (added) {
+    renderGalleryGrid();
+    renderCategoryManager();
+    markDirty();
+    showToast(`${added} image(s) importée(s) — pensez à sauvegarder`, 'success');
+  } else {
+    showToast('Aucune nouvelle image à importer', 'info');
+  }
 }
 
 function renderCategoryManager() {
