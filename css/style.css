@@ -1325,6 +1325,23 @@ body::before {
     color: var(--text-muted);
 }
 
+.footer-admin {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-family: var(--font-heading);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    opacity: 0.45;
+    transition: opacity var(--tr-fast), color var(--tr-fast);
+}
+
+.footer-admin:hover {
+    opacity: 1;
+    color: var(--accent-light);
+}
+
 /* --- Scroll Animations --- */
 .reveal {
     opacity: 0;

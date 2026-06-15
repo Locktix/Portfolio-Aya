@@ -103,7 +103,10 @@ function renderFooter() {
                 <p>${content.site.tagline}</p>
             </div>
             <div class="footer-nav">${links}</div>
-            <div class="footer-copy"><p>${content.site.copyright}</p></div>
+            <div class="footer-copy">
+                <p>${content.site.copyright}</p>
+                <a href="admin/" class="footer-admin" aria-label="Administration">Admin</a>
+            </div>
         </div>`;
 }
 
