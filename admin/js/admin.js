@@ -53,6 +53,168 @@ async function deleteImageApi(path) {
   });
 }
 
+function moveImageApi(path, category) {
+  return apiFetch('move_image', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ path, category }),
+  });
+}
+
+function createCategoryApi(id) {
+  return apiFetch('create_category', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  });
+}
+
+function deleteCategoryApi(id) {
+  return apiFetch('delete_category', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  });
+}
+
+// ── Sélecteur d'image réutilisable ──────────────────────────────────────────
+// imageField(valeur, catégorieUpload, onChange) → markup HTML branché sur le
+// modal de sélection (choisir une image existante OU en uploader une nouvelle).
+
+let imgFieldSeq = 0;
+const imgFields = {};
+
+function imageField(value, category, onChange) {
+  const id = 'imgf' + (++imgFieldSeq);
+  imgFields[id] = {
+    category,
+    value: value || '',
+    apply(v) { this.value = v; onChange(v); markDirty(); },
+  };
+  return imageFieldMarkup(id);
+}
+
+function imageFieldMarkup(id) {
+  const v = imgFields[id].value;
+  return `<div class="img-field" data-imgfield="${id}">
+      <div class="img-field-preview${v ? '' : ' is-empty'}">
+        ${v ? `<img src="../${esc(v)}" alt="">` : '<span class="img-field-ph">∅</span>'}
+      </div>
+      <div class="img-field-side">
+        <div class="img-field-path">${v ? esc(v) : '<em class="muted">aucune image</em>'}</div>
+        <div class="img-field-btns">
+          <button type="button" class="btn btn-ghost btn-sm" data-img-pick="${id}">Choisir / uploader</button>
+          ${v ? `<button type="button" class="btn btn-danger btn-sm" data-img-clear="${id}">Retirer</button>` : ''}
+        </div>
+      </div>
+    </div>`;
+}
+
+function rerenderImageField(id) {
+  const el = document.querySelector(`[data-imgfield="${id}"]`);
+  if (el) el.outerHTML = imageFieldMarkup(id);
+}
+
+// Délégation globale (attachée une fois dans init)
+function setupImageFieldDelegation() {
+  document.addEventListener('click', e => {
+    const pick = e.target.closest('[data-img-pick]');
+    if (pick) {
+      const id  = pick.dataset.imgPick;
+      const reg = imgFields[id];
+      if (!reg) return;
+      openImagePicker(reg.category, path => { reg.apply(path); rerenderImageField(id); });
+      return;
+    }
+    const clr = e.target.closest('[data-img-clear]');
+    if (clr) {
+      const id = clr.dataset.imgClear;
+      if (imgFields[id]) { imgFields[id].apply(''); rerenderImageField(id); }
+    }
+  });
+}
+
+async function openImagePicker(category, onPick) {
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
+    <div class="modal">
+      <div class="modal-head">
+        <h3>Choisir une image</h3>
+        <button class="modal-close" data-modal-close title="Fermer">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="picker-upload">
+          <button class="btn btn-primary btn-sm picker-upload-btn">⊕ Uploader une nouvelle image</button>
+          <span class="picker-upload-cat">→ dossier « ${esc(category)} »</span>
+          <span class="picker-upload-status"></span>
+          <input type="file" accept="image/*" class="picker-file" style="display:none;">
+        </div>
+        <div class="picker-divider"><span>ou choisir une image déjà présente</span></div>
+        <div class="picker-grid"><div class="loading"><div class="loading-spinner"></div>Chargement…</div></div>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add('show'));
+
+  let closed = false;
+  function closeModal() {
+    if (closed) return;
+    closed = true;
+    overlay.classList.remove('show');
+    setTimeout(() => overlay.remove(), 220);
+  }
+  function done(path) { onPick(path); closeModal(); }
+
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay || e.target.closest('[data-modal-close]')) closeModal();
+  });
+  document.addEventListener('keydown', function esc(e) {
+    if (e.key === 'Escape') { closeModal(); document.removeEventListener('keydown', esc); }
+  });
+
+  // Upload
+  const fileInput = overlay.querySelector('.picker-file');
+  overlay.querySelector('.picker-upload-btn').onclick = () => fileInput.click();
+  fileInput.onchange = async () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    const status = overlay.querySelector('.picker-upload-status');
+    status.textContent = 'Upload…';
+    try {
+      const r = await uploadImage(file, category);
+      done(r.path);
+    } catch (err) {
+      status.textContent = 'Erreur : ' + err.message;
+    }
+  };
+
+  // Parcourir l'existant
+  const grid = overlay.querySelector('.picker-grid');
+  try {
+    const data = await apiFetch('list_all_images');
+    const cats = data.categories || {};
+    const keys = Object.keys(cats);
+    if (!keys.length) {
+      grid.innerHTML = '<p class="picker-empty">Aucune image pour le moment — uploadez-en une.</p>';
+    } else {
+      grid.innerHTML = keys.map(cat => `
+        <div class="picker-cat-label">${esc(cat)}</div>
+        <div class="picker-cat-grid">
+          ${cats[cat].map(p => `
+            <button class="picker-thumb" type="button" data-pick-path="${esc(p)}" title="${esc(p)}">
+              <img src="../${esc(p)}" alt="" loading="lazy">
+            </button>`).join('')}
+        </div>`).join('');
+      grid.querySelectorAll('[data-pick-path]').forEach(b => {
+        b.onclick = () => done(b.dataset.pickPath);
+      });
+    }
+  } catch (err) {
+    grid.innerHTML = `<p class="picker-empty">Erreur : ${esc(err.message)}</p>`;
+  }
+}
+
 // ── Dirty state ───────────────────────────────────────────────────────────
 
 function setDirty(val) {
@@ -201,8 +363,8 @@ function renderAccueil(c) {
       <input type="text" class="form-input" id="hero-tags" value="${esc(a.hero.tags.join(', '))}">
     </div>
     <div class="form-group">
-      <label class="form-label">Image héro (chemin)</label>
-      <input type="text" class="form-input" id="hero-image" value="${esc(a.hero.image || '')}">
+      <label class="form-label">Image héro</label>
+      ${imageField(a.hero.image, 'accueil', v => a.hero.image = v)}
     </div>
 
     <hr class="divider">
@@ -256,13 +418,20 @@ function renderAccueil(c) {
         <input type="text" class="form-input" id="intro-btn-link" value="${esc(a.intro.buttonLink)}">
       </div>
     </div>
+    <div class="form-group">
+      <label class="form-label">Image intro</label>
+      ${imageField(a.intro.image, 'accueil', v => a.intro.image = v)}
+    </div>
+    <div class="form-group">
+      <label class="form-label">Alt de l'image intro</label>
+      <input type="text" class="form-input" id="intro-image-alt" value="${esc(a.intro.imageAlt || '')}">
+    </div>
 
     ${saveBar()}`;
 
   bind('hero-watermark', v => a.hero.watermark = v);
   bind('hero-name',      v => a.hero.name = v);
   bind('hero-subtitle',  v => a.hero.subtitle = v);
-  bind('hero-image',     v => a.hero.image = v);
   bind('hero-tags',      v => { a.hero.tags = v.split(',').map(t => t.trim()).filter(Boolean); markDirty(); });
   bind('feat-label',  v => a.featured.label = v);
   bind('feat-title',  v => a.featured.title = v);
@@ -273,6 +442,7 @@ function renderAccueil(c) {
   bind('intro-text',     v => a.intro.text = v);
   bind('intro-btn-text', v => a.intro.buttonText = v);
   bind('intro-btn-link', v => a.intro.buttonLink = v);
+  bind('intro-image-alt', v => a.intro.imageAlt = v);
 
   renderFeaturedItems();
   document.getElementById('btn-add-feat').onclick = () => {
@@ -294,24 +464,27 @@ function renderFeaturedItems() {
         <span class="card-label">Item ${i + 1}</span>
         <button class="btn btn-danger btn-sm" data-fi-del="${i}">Supprimer</button>
       </div>
-      <div class="form-grid-3">
+      <div class="form-grid">
         <div class="form-group">
           <label class="form-label">Titre</label>
           <input type="text" class="form-input" data-fi-f="title" data-fi-i="${i}" value="${esc(item.title)}">
         </div>
         <div class="form-group">
           <label class="form-label">Catégorie</label>
-          <input type="text" class="form-input" data-fi-f="category" data-fi-i="${i}" value="${esc(item.category)}">
+          <select class="form-select" data-fi-f="category" data-fi-i="${i}">
+            ${featuredCategoryOptions(item.category)}
+          </select>
         </div>
-        <div class="form-group">
-          <label class="form-label">Image (chemin)</label>
-          <input type="text" class="form-input" data-fi-f="image" data-fi-i="${i}" value="${esc(item.image)}">
-        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Image</label>
+        ${imageField(item.image, 'accueil', v => item.image = v)}
       </div>
     </div>`).join('');
 
   list.querySelectorAll('[data-fi-f]').forEach(el => {
-    el.addEventListener('input', e => {
+    const evt = el.tagName === 'SELECT' ? 'change' : 'input';
+    el.addEventListener(evt, e => {
       items[+e.target.dataset.fiI][e.target.dataset.fiF] = e.target.value;
       markDirty();
     });
@@ -323,10 +496,48 @@ function renderFeaturedItems() {
 
 // ── SECTION: Galerie ──────────────────────────────────────────────────────
 
-const CATEGORIES = ['tfe', 'marketing', 'portrait', 'street', 'reportage', 'accueil', 'demarche'];
+// Les catégories de galerie sont définies dans content.galerie.filters
+// ('all' est le filtre spécial « Tout », pas une vraie catégorie).
+function galleryFilters() {
+  return content.galerie.filters.filter(f => f.id !== 'all');
+}
+
+function labelForCategory(id) {
+  const f = content.galerie.filters.find(f => f.id === id);
+  return f ? f.label : id;
+}
+
+function slugify(s) {
+  return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 32);
+}
 
 function categoryOptions(current) {
-  return CATEGORIES.map(c => `<option value="${c}" ${current === c ? 'selected' : ''}>${c}</option>`).join('');
+  return galleryFilters().map(f =>
+    `<option value="${esc(f.id)}" ${current === f.id ? 'selected' : ''}>${esc(f.label)}</option>`
+  ).join('');
+}
+
+// Pour les items "Travaux récents" : on affiche le label de catégorie tel quel
+// sur le site, donc le menu propose les labels des filtres (+ la valeur actuelle
+// si elle ne correspond à aucun filtre, pour ne rien perdre).
+function featuredCategoryOptions(current) {
+  const labels = galleryFilters().map(f => f.label);
+  if (current && !labels.includes(current)) labels.unshift(current);
+  return labels.map(l =>
+    `<option value="${esc(l)}" ${current === l ? 'selected' : ''}>${esc(l)}</option>`
+  ).join('');
+}
+
+// Icônes réellement dessinées sur la page contact (voir ICONS dans js/main.js).
+const ICON_CHOICES = [['mail', 'Email'], ['location', 'Localisation'], ['instagram', 'Instagram']];
+
+function iconOptions(current) {
+  const choices = ICON_CHOICES.slice();
+  if (current && !choices.some(c => c[0] === current)) choices.unshift([current, current]);
+  return choices.map(([v, l]) =>
+    `<option value="${esc(v)}" ${current === v ? 'selected' : ''}>${esc(l)}</option>`
+  ).join('');
 }
 
 function renderGalerie(c) {
@@ -356,11 +567,20 @@ function renderGalerie(c) {
     </div>
 
     <hr class="divider">
+    <div class="block-heading">Catégories</div>
+    <p class="section-subtitle" style="margin-top:-6px;">Renommer met aussi à jour le filtre affiché sur le site. Une catégorie non vide ne peut pas être supprimée.</p>
+    <div id="cat-manager"></div>
+    <div class="cat-add">
+      <input type="text" class="form-input" id="cat-new-label" placeholder="Nom d'une nouvelle catégorie (ex : Mariage)">
+      <button class="btn btn-ghost btn-sm" id="btn-add-cat">+ Ajouter</button>
+    </div>
+
+    <hr class="divider">
     <div class="block-heading">Ajouter des photos</div>
     <div class="form-group" style="max-width:240px;">
       <label class="form-label">Catégorie</label>
       <select class="form-select" id="upload-category">
-        ${categoryOptions('tfe')}
+        ${categoryOptions((galleryFilters()[0] || {}).id)}
       </select>
     </div>
     <div class="upload-zone" id="upload-zone">
@@ -382,9 +602,96 @@ function renderGalerie(c) {
   bind('gal-watermark', v => g.header.watermark = v);
   bind('gal-desc',      v => g.header.description = v);
 
+  renderCategoryManager();
+  document.getElementById('btn-add-cat').onclick = addCategory;
+  document.getElementById('cat-new-label').addEventListener('keydown', e => {
+    if (e.key === 'Enter') { e.preventDefault(); addCategory(); }
+  });
+
   renderGalleryGrid();
   setupUploadZone();
   attachSave();
+}
+
+function renderCategoryManager() {
+  const wrap = document.getElementById('cat-manager');
+  if (!wrap) return;
+  const filters = galleryFilters();
+
+  wrap.innerHTML = filters.map(f => {
+    const count = content.galerie.items.filter(it => it.category === f.id).length;
+    return `<div class="cat-row" data-cat="${esc(f.id)}">
+        <span class="cat-slug">${esc(f.id)}</span>
+        <input type="text" class="form-input cat-label-input" data-cat-label="${esc(f.id)}" value="${esc(f.label)}">
+        <span class="cat-count">${count} photo${count > 1 ? 's' : ''}</span>
+        <button class="btn btn-danger btn-sm" data-cat-del="${esc(f.id)}">Supprimer</button>
+      </div>`;
+  }).join('') || '<p class="muted" style="padding:4px 0;">Aucune catégorie — ajoutez-en une.</p>';
+
+  wrap.querySelectorAll('[data-cat-label]').forEach(el => {
+    el.addEventListener('input', e => {
+      const id = e.target.dataset.catLabel;
+      const f  = content.galerie.filters.find(f => f.id === id);
+      if (!f) return;
+      f.label = e.target.value;
+      // Garder categoryLabel des photos synchronisé avec le label du filtre
+      content.galerie.items.forEach(it => { if (it.category === id) it.categoryLabel = e.target.value; });
+      markDirty();
+    });
+  });
+
+  wrap.querySelectorAll('[data-cat-del]').forEach(el => {
+    el.onclick = async () => {
+      const id    = el.dataset.catDel;
+      const count = content.galerie.items.filter(it => it.category === id).length;
+      if (count > 0) {
+        showToast(`« ${id} » contient ${count} photo(s) — videz la catégorie d'abord`, 'warning');
+        return;
+      }
+      if (!confirm(`Supprimer la catégorie « ${id} » ?`)) return;
+      try {
+        await deleteCategoryApi(id);
+        content.galerie.filters = content.galerie.filters.filter(f => f.id !== id);
+        renderCategoryManager();
+        refreshCategorySelects();
+        markDirty();
+        showToast('Catégorie supprimée — pensez à sauvegarder', 'success');
+      } catch (err) {
+        showToast('Erreur : ' + err.message, 'error');
+      }
+    };
+  });
+}
+
+async function addCategory() {
+  const input = document.getElementById('cat-new-label');
+  const label = input.value.trim();
+  if (!label) { showToast('Entrez un nom de catégorie', 'warning'); return; }
+  const id = slugify(label);
+  if (id.length < 2) { showToast('Nom trop court ou invalide', 'warning'); return; }
+  if (content.galerie.filters.some(f => f.id === id)) {
+    showToast('Cette catégorie existe déjà', 'warning');
+    return;
+  }
+  try {
+    await createCategoryApi(id);
+    content.galerie.filters.push({ id, label });
+    input.value = '';
+    renderCategoryManager();
+    refreshCategorySelects();
+    markDirty();
+    showToast(`Catégorie « ${label} » créée — pensez à sauvegarder`, 'success');
+  } catch (err) {
+    showToast('Erreur : ' + err.message, 'error');
+  }
+}
+
+function refreshCategorySelects() {
+  const up = document.getElementById('upload-category');
+  if (up) up.innerHTML = categoryOptions(up.value);
+  document.querySelectorAll('#gallery-grid [data-gi-f="category"]').forEach(sel => {
+    sel.innerHTML = categoryOptions(sel.value);
+  });
 }
 
 function renderGalleryGrid() {
@@ -419,11 +726,30 @@ function renderGalleryGrid() {
   // Field bindings
   grid.querySelectorAll('[data-gi-f]').forEach(el => {
     const evt = el.tagName === 'SELECT' ? 'change' : 'input';
-    el.addEventListener(evt, e => {
+    el.addEventListener(evt, async e => {
       const item = content.galerie.items[+e.target.dataset.giI];
-      item[e.target.dataset.giF] = e.target.value;
-      if (e.target.dataset.giF === 'category') item.categoryLabel = e.target.value;
-      markDirty();
+      const f    = e.target.dataset.giF;
+
+      if (f === 'category') {
+        const newCat = e.target.value;
+        item.category      = newCat;
+        item.categoryLabel = labelForCategory(newCat);
+        markDirty();
+        // Déplacer physiquement le fichier dans le dossier de la nouvelle catégorie
+        const curDir = item.image ? item.image.split('/').slice(-2, -1)[0] : '';
+        if (item.image && curDir !== newCat) {
+          try {
+            const r = await moveImageApi(item.image, newCat);
+            item.image = r.path;
+            renderGalleryGrid();
+          } catch (err) {
+            showToast('Image non déplacée : ' + err.message, 'warning');
+          }
+        }
+      } else {
+        item[f] = e.target.value;
+        markDirty();
+      }
     });
   });
 
@@ -508,7 +834,7 @@ async function handleUploads(files) {
     try {
       const result = await uploadImage(file, category);
       const title  = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ');
-      content.galerie.items.push({ image: result.path, title, category, categoryLabel: category });
+      content.galerie.items.push({ image: result.path, title, category, categoryLabel: labelForCategory(category) });
       done++;
     } catch (e) {
       errors.push(`${file.name}: ${e.message}`);
@@ -633,15 +959,13 @@ function renderDemarcheBlocks() {
         <label class="form-label">Paragraphe 2</label>
         <textarea class="form-textarea" data-db-f="p1" data-db-i="${i}">${esc(b.paragraphs[1] || '')}</textarea>
       </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">Image (chemin)</label>
-          <input type="text" class="form-input" data-db-f="image" data-db-i="${i}" value="${esc(b.image)}">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Alt de l'image</label>
-          <input type="text" class="form-input" data-db-f="imageAlt" data-db-i="${i}" value="${esc(b.imageAlt || '')}">
-        </div>
+      <div class="form-group">
+        <label class="form-label">Image</label>
+        ${imageField(b.image, 'demarche', v => b.image = v)}
+      </div>
+      <div class="form-group">
+        <label class="form-label">Alt de l'image</label>
+        <input type="text" class="form-input" data-db-f="imageAlt" data-db-i="${i}" value="${esc(b.imageAlt || '')}">
       </div>
       <label class="toggle">
         <input type="checkbox" data-db-f="reverse" data-db-i="${i}" ${b.reverse ? 'checked' : ''}>
@@ -823,7 +1147,7 @@ function renderContact(c) {
   const ct = content.contact;
   c.innerHTML = `
     <h1 class="section-title">CONTACT</h1>
-    <p class="section-subtitle">Informations de contact et formulaire</p>
+    <p class="section-subtitle">Coordonnées affichées sur la page contact</p>
 
     <div class="block-heading">En-tête</div>
     <div class="form-grid">
@@ -857,19 +1181,6 @@ function renderContact(c) {
     <div id="con-details"></div>
     <button class="btn btn-ghost btn-sm" id="btn-add-detail" style="margin-top:4px;">+ Ajouter</button>
 
-    <hr class="divider">
-    <div class="block-heading">Formulaire</div>
-    <div class="form-grid">
-      <div class="form-group">
-        <label class="form-label">Texte du bouton</label>
-        <input type="text" class="form-input" id="con-form-btn" value="${esc(ct.form.submitText)}">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Message de succès</label>
-        <input type="text" class="form-input" id="con-form-msg" value="${esc(ct.form.successMessage)}">
-      </div>
-    </div>
-
     ${saveBar()}`;
 
   bind('con-label',      v => ct.header.label = v);
@@ -877,8 +1188,6 @@ function renderContact(c) {
   bind('con-desc',       v => ct.header.description = v);
   bind('con-info-title', v => ct.info.title = v);
   bind('con-info-text',  v => ct.info.text = v);
-  bind('con-form-btn',   v => ct.form.submitText = v);
-  bind('con-form-msg',   v => ct.form.successMessage = v);
 
   renderContactDetails();
   document.getElementById('btn-add-detail').onclick = () => {
@@ -896,8 +1205,9 @@ function renderContactDetails() {
 
   c.innerHTML = details.map((d, i) => `
     <div class="detail-row">
-      <input type="text" class="form-input" style="width:80px;flex-shrink:0;"
-             data-cd-f="icon" data-cd-i="${i}" value="${esc(d.icon)}" placeholder="Icône">
+      <select class="form-select" style="width:150px;flex-shrink:0;" data-cd-f="icon" data-cd-i="${i}">
+        ${iconOptions(d.icon)}
+      </select>
       <input type="text" class="form-input" style="width:130px;flex-shrink:0;"
              data-cd-f="label" data-cd-i="${i}" value="${esc(d.label)}" placeholder="Label">
       <input type="text" class="form-input"
@@ -906,7 +1216,8 @@ function renderContactDetails() {
     </div>`).join('');
 
   c.querySelectorAll('[data-cd-f]').forEach(el => {
-    el.addEventListener('input', e => {
+    const evt = el.tagName === 'SELECT' ? 'change' : 'input';
+    el.addEventListener(evt, e => {
       details[+e.target.dataset.cdI][e.target.dataset.cdF] = e.target.value;
       markDirty();
     });
@@ -929,6 +1240,8 @@ async function init() {
       </div>`;
     return;
   }
+
+  setupImageFieldDelegation();
 
   // Nav clicks
   document.querySelectorAll('.nav-item').forEach(el => {

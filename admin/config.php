@@ -6,8 +6,10 @@ define('ADMIN_PASSWORD', 'aya2026');
 define('CONTENT_JSON_PATH', dirname(__DIR__) . '/content.json');
 define('ASSETS_IMG_PATH',   dirname(__DIR__) . '/assets/img/');
 
-// Catégories d'images autorisées
-define('ALLOWED_CATEGORIES', ['accueil', 'demarche', 'marketing', 'portrait', 'reportage', 'street', 'tfe']);
+// Catégories système (cibles d'upload hors galerie : héro, intro, blocs démarche).
+// Non supprimables. Les catégories de galerie sont gérées dynamiquement
+// (un dossier sous assets/img/ = une catégorie valide), voir valid_category() dans api.php.
+define('RESERVED_CATEGORIES', ['accueil', 'demarche']);
 
 // Extensions et types MIME acceptés
 define('ALLOWED_EXTS',  ['jpg', 'jpeg', 'png', 'webp', 'gif']);

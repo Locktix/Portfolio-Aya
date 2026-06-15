@@ -849,3 +849,169 @@ hr.divider {
   .form-grid, .form-grid-3 { grid-template-columns: 1fr; }
   .admin-main { padding: 28px 24px 80px; }
 }
+
+/* ── Utilities ───────────────────────────────────────────── */
+.muted { color: var(--muted); }
+
+/* ── Sélecteur d'image (img-field) ───────────────────────── */
+.img-field {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px;
+}
+.img-field-preview {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.img-field-preview img { width: 100%; height: 100%; object-fit: cover; }
+.img-field-preview.is-empty { color: var(--dim); }
+.img-field-ph { font-size: 26px; color: var(--dim); }
+.img-field-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+}
+.img-field-path {
+  font-size: 11px;
+  color: var(--muted);
+  word-break: break-all;
+  line-height: 1.4;
+}
+.img-field-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ── Gestion des catégories ──────────────────────────────── */
+.cat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cat-slug {
+  font-family: var(--font-head);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  padding: 3px 8px;
+  min-width: 92px;
+  text-align: center;
+}
+.cat-label-input { flex: 1; min-width: 120px; }
+.cat-count { font-size: 11px; color: var(--muted); white-space: nowrap; }
+.cat-add { display: flex; gap: 10px; margin-top: 14px; }
+.cat-add .form-input { flex: 1; }
+
+/* ── Modal / sélecteur d'image ───────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  background: rgba(2, 2, 6, 0.72);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+.modal-overlay.show { opacity: 1; }
+.modal {
+  width: 100%;
+  max-width: 720px;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  transform: translateY(8px) scale(0.99);
+  transition: transform 0.2s var(--ease);
+}
+.modal-overlay.show .modal { transform: none; }
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.modal-head h3 {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.modal-close {
+  font-size: 16px;
+  color: var(--muted);
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  transition: all var(--tr, 0.2s);
+}
+.modal-close:hover { color: var(--text); background: var(--surface3); }
+.modal-body { padding: 18px 20px; overflow-y: auto; }
+
+.picker-upload { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.picker-upload-cat { font-size: 12px; color: var(--muted); }
+.picker-upload-status { font-size: 12px; color: var(--accent-light); }
+.picker-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 14px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+}
+.picker-divider::before, .picker-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.picker-grid { min-height: 80px; }
+.picker-cat-label {
+  font-family: var(--font-head);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin: 14px 0 8px;
+}
+.picker-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 8px;
+}
+.picker-thumb {
+  aspect-ratio: 1;
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--surface3);
+  transition: border-color var(--tr, 0.2s);
+}
+.picker-thumb:hover { border-color: var(--accent); }
+.picker-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.picker-empty { padding: 24px 4px; color: var(--muted); font-size: 13px; }

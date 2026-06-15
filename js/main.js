@@ -21,9 +21,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderPage(page);
     renderFooter();
 
-    // Fallback placeholder pour les images manquantes
+    // Fallback placeholder pour les images manquantes.
+    // Exception : les items de galerie gèrent eux-mêmes leur erreur (ils se cachent).
     document.querySelectorAll('img').forEach(img => {
         img.addEventListener('error', function () {
+            if (this.closest('.gallery-item')) return;
             if (!this.dataset.fallback) {
                 this.dataset.fallback = '1';
                 this.src = 'assets/img/placeholder.svg';
@@ -42,10 +44,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (page === 'galerie') {
         initGallery();
         initLightbox();
-    }
-
-    if (page === 'contact') {
-        initContactForm();
     }
 });
 
@@ -232,6 +230,15 @@ function renderGalerie() {
             <div class="gallery-grid">${items}</div>
         </div>`;
 
+    // N'afficher que les photos réellement présentes : un item dont l'image
+    // est introuvable se retire de lui-même (pas de placeholder qui casse le visuel).
+    document.querySelectorAll('#gallery-section .gallery-item img').forEach(img => {
+        img.addEventListener('error', () => {
+            const item = img.closest('.gallery-item');
+            if (item) item.remove();
+        });
+    });
+
     // Lightbox structure
     document.getElementById('lightbox').className = 'lightbox';
     document.getElementById('lightbox').innerHTML = `
@@ -346,46 +353,31 @@ function renderContact() {
             <p>${d.header.description}</p>
         </div>`;
 
-    // Contact details
-    const details = d.info.details.map(detail => `
+    // Coordonn\u00e9es \u2014 email et Instagram cliquables
+    const details = d.info.details.map(detail => {
+        let value = detail.value;
+        if (detail.icon === 'mail') {
+            value = `<a href="mailto:${detail.value}">${detail.value}</a>`;
+        } else if (detail.icon === 'instagram') {
+            const handle = detail.value.replace(/^@/, '').trim();
+            value = `<a href="https://instagram.com/${handle}" target="_blank" rel="noopener">${detail.value}</a>`;
+        }
+        return `
         <div class="contact-detail">
             <div class="contact-detail-icon">${ICONS[detail.icon] || ''}</div>
             <div>
                 <label>${detail.label}</label>
-                <span>${detail.value}</span>
+                <span>${value}</span>
             </div>
-        </div>`).join('');
+        </div>`;
+    }).join('');
 
     document.getElementById('contact-section').innerHTML = `
         <div class="container">
-            <div class="contact-grid">
-                <div class="contact-info reveal-left">
-                    <h2>${d.info.title}</h2>
-                    <p>${d.info.text}</p>
-                    <div class="contact-details">${details}</div>
-                </div>
-                <div class="reveal-right">
-                    <form class="contact-form">
-                        <div class="form-group">
-                            <label for="name">Nom</label>
-                            <input type="text" id="name" name="name" placeholder="Votre nom" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder="votre@email.com" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="subject">Sujet</label>
-                            <input type="text" id="subject" name="subject" placeholder="L'objet de votre message">
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" placeholder="D\u00e9crivez votre projet ou votre demande..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn-submit">${d.form.submitText}</button>
-                        <div class="form-success">${d.form.successMessage}</div>
-                    </form>
-                </div>
+            <div class="contact-info contact-info-solo reveal">
+                <h2>${d.info.title}</h2>
+                <p>${d.info.text}</p>
+                <div class="contact-details">${details}</div>
             </div>
         </div>`;
 }
@@ -574,36 +566,5 @@ function initLightbox() {
         if (e.key === 'Escape') close();
         if (e.key === 'ArrowRight') next();
         if (e.key === 'ArrowLeft') prev();
-    });
-}
-
-/* ==================
-   Contact Form
-   ================== */
-function initContactForm() {
-    const form = document.querySelector('.contact-form');
-    const success = document.querySelector('.form-success');
-    if (!form) return;
-
-    const emailDetail = content.contact.info.details.find(d => d.icon === 'mail');
-    const targetEmail = emailDetail ? emailDetail.value : '';
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(form);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const subject = formData.get('subject') || 'Contact Portfolio';
-        const message = formData.get('message');
-
-        const mailtoLink = `mailto:${targetEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`De: ${name}\nEmail: ${email}\n\n${message}`)}`;
-        window.location.href = mailtoLink;
-
-        if (success) {
-            success.classList.add('show');
-            form.reset();
-            setTimeout(() => success.classList.remove('show'), 5000);
-        }
     });
 }
