@@ -1033,3 +1033,10 @@ hr.divider {
   .modal { max-height: 92vh; }
   .picker-cat-grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
 }
+
+/* Page de connexion : fond = image hero de l'accueil (chemin injecté en inline) */
+.login-page--hero {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

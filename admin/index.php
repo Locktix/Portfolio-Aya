@@ -6,6 +6,14 @@ session_name(SESSION_NAME);
 session_start();
 
 $logged_in = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
+
+// Fond de la page de connexion = image hero de l'accueil (lue dynamiquement)
+$hero_bg = '';
+if (!$logged_in) {
+    $cj  = @json_decode(@file_get_contents(CONTENT_JSON_PATH), true);
+    $img = $cj['accueil']['hero']['image'] ?? '';
+    if ($img) $hero_bg = '../' . ltrim($img, '/');
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -86,7 +94,7 @@ $logged_in = isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in']
 <?php else: ?>
 
 <!-- ═══════════════════ LOGIN PAGE ═══════════════════ -->
-<div class="login-page">
+<div class="login-page<?= $hero_bg ? ' login-page--hero' : '' ?>"<?php if ($hero_bg): ?> style="background-image: linear-gradient(rgba(8,8,13,0.88), rgba(8,8,13,0.74)), url('<?= htmlspecialchars($hero_bg, ENT_QUOTES) ?>');"<?php endif; ?>>
   <div class="login-card">
 
     <div class="login-logo">
