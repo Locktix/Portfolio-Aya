@@ -27,6 +27,24 @@ function is_authed() {
     return isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true;
 }
 
+// ── Anti brute-force (throttle login par IP, stocké hors webroot) ───────────
+function throttle_path() {
+    return sys_get_temp_dir() . '/aya_admin_throttle.json';
+}
+function throttle_load() {
+    $f = throttle_path();
+    if (!is_file($f)) return [];
+    $d = json_decode((string) file_get_contents($f), true);
+    return is_array($d) ? $d : [];
+}
+function throttle_save($d) {
+    $now = time();
+    foreach ($d as $ip => $r) {           // purge des entrées expirées
+        if (($r['until'] ?? 0) < $now && ($r['fails'] ?? 0) === 0) unset($d[$ip]);
+    }
+    @file_put_contents(throttle_path(), json_encode($d));
+}
+
 // Une catégorie est valide si son slug est propre ET que le dossier existe.
 // (Les dossiers sont créés via create_category — pas de liste codée en dur.)
 function valid_category($cat) {
@@ -36,13 +54,33 @@ function valid_category($cat) {
 
 // ── Login (pas besoin d'être authentifié) ──────────────────────────────────
 if ($action === 'login') {
-    $input = json_decode(file_get_contents('php://input'), true);
+    $input    = json_decode(file_get_contents('php://input'), true);
     $password = $input['password'] ?? '';
-    if ($password === ADMIN_PASSWORD) {
+
+    $ip  = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+    $now = time();
+    $thr = throttle_load();
+    $rec = $thr[$ip] ?? ['fails' => 0, 'until' => 0];
+
+    if (($rec['until'] ?? 0) > $now) {
+        json_err('Trop de tentatives. Réessayez dans ' . ceil(($rec['until'] - $now) / 60) . ' min.', 429);
+    }
+
+    if (password_verify($password, ADMIN_PASSWORD_HASH)) {
+        unset($thr[$ip]);
+        throttle_save($thr);
         session_regenerate_id(true);
         $_SESSION['admin_logged_in'] = true;
         json_ok();
     }
+
+    $rec['fails'] = ($rec['fails'] ?? 0) + 1;
+    if ($rec['fails'] >= LOGIN_MAX_FAILS) {
+        $rec['until'] = $now + LOGIN_LOCK_SECONDS;
+        $rec['fails'] = 0;
+    }
+    $thr[$ip] = $rec;
+    throttle_save($thr);
     json_err('Mot de passe incorrect', 401);
 }
 

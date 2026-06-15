@@ -1,0 +1,7 @@
+# Page d'erreur personnalisée
+ErrorDocument 404 /404.html
+
+# Empêche l'accès direct aux fichiers de configuration admin
+<FilesMatch "(^config|config\.local)\.php$">
+    Require all denied
+</FilesMatch>

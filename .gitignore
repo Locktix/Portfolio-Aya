@@ -1,0 +1,6 @@
+# Surcharge locale du hash admin — ne jamais committer
+admin/config.local.php
+
+# Divers
+*.tmp
+.DS_Store

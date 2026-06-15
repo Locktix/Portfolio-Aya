@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page introuvable — AYAA</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #08080d;
+            color: #d4d4e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            overflow: hidden;
+        }
+        .wrap { position: relative; z-index: 1; }
+        .code {
+            font-family: 'Bebas Neue', 'Arial Narrow', sans-serif;
+            font-size: clamp(7rem, 28vw, 16rem);
+            line-height: 0.85;
+            letter-spacing: 0.05em;
+            color: #d4d4e0;
+        }
+        .line {
+            width: 48px;
+            height: 1px;
+            background: #4a7c9b;
+            margin: 1.5rem auto;
+        }
+        .msg {
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            font-size: 0.85rem;
+            color: #72728a;
+            margin-bottom: 2.2rem;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            padding: 0.85rem 2rem;
+            color: #d4d4e0;
+            border: 1px solid #2e5a75;
+            background: rgba(74, 124, 155, 0.12);
+            text-decoration: none;
+            transition: background 0.25s, border-color 0.25s;
+        }
+        .btn:hover { background: #2e5a75; border-color: #4a7c9b; }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bebas Neue', 'Arial Narrow', sans-serif;
+            font-size: clamp(8rem, 30vw, 26rem);
+            color: #fff;
+            opacity: 0.03;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="watermark">PERDU</div>
+    <div class="wrap">
+        <div class="code">404</div>
+        <div class="line"></div>
+        <p class="msg">Cette page n'existe pas</p>
+        <a class="btn" href="/">Retour à l'accueil</a>
+    </div>
+</body>
+</html>
