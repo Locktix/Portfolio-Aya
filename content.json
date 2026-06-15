@@ -28,7 +28,7 @@
     },
     "accueil": {
         "hero": {
-            "image": "assets/img/street/street1.jpg",
+            "image": "assets\/img\/paysage\/C4BE0AE3-D434-468F-A7C7-BB0F15EFF6CC.jpg",
             "watermark": "DOCUMENTAIRE",
             "name": "AYAA",
             "subtitle": "Photographie Documentaire & Street",
@@ -46,24 +46,24 @@
             "linkText": "Voir tout",
             "items": [
                 {
-                    "image": "assets/img/tfe/tfe1.jpg",
+                    "image": "assets\/img\/tfe\/tfe1.jpg",
                     "title": "Série TFE",
                     "category": "TFE"
                 },
                 {
-                    "image": "assets/img/tfe/tfe4.jpg",
+                    "image": "assets\/img\/tfe\/tfe4.jpg",
                     "title": "Série TFE",
                     "category": "TFE"
                 },
                 {
-                    "image": "assets/img/street/street1.jpg",
+                    "image": "assets\/img\/street\/street1.jpg",
                     "title": "Street Photo",
                     "category": "Street Photo"
                 },
                 {
-                    "image": "assets/img/street/street2.jpg",
-                    "title": "Street Photo",
-                    "category": "Street Photo"
+                    "image": "assets\/img\/paysage\/CF18B2C8-F50D-4D8E-9B89-B639EC4BF801.jpg",
+                    "title": "Paysage",
+                    "category": "Paysage"
                 }
             ]
         },
@@ -73,7 +73,7 @@
             "text": "Photographe documentaire et de rue, je m'intéresse aux histoires que le monde urbain raconte quand personne ne regarde. Mon travail oscille entre le portrait intime, le reportage de terrain et l'image publicitaire — toujours avec une approche directe, sans filtre.",
             "buttonText": "Ma démarche",
             "buttonLink": "demarche.html",
-            "image": "assets/img/tfe/tfe2.jpg",
+            "image": "assets\/img\/tfe\/tfe2.jpg",
             "imageAlt": "Portrait — Ayaa"
         }
     },
@@ -95,7 +95,7 @@
             },
             {
                 "id": "marketing",
-                "label": "Marketing / Pub"
+                "label": "Marketing \/ Pub"
             },
             {
                 "id": "portrait",
@@ -108,80 +108,138 @@
             {
                 "id": "reportage",
                 "label": "Reportage"
+            },
+            {
+                "id": "paysage",
+                "label": "Paysage"
             }
         ],
         "items": [
             {
-                "image": "assets/img/tfe/tfe1.jpg",
+                "image": "assets\/img\/tfe\/tfe1.jpg",
                 "title": "Série TFE — I",
                 "category": "tfe",
                 "categoryLabel": "TFE"
             },
             {
-                "image": "assets/img/tfe/tfe2.jpg",
+                "image": "assets\/img\/tfe\/tfe2.jpg",
                 "title": "Série TFE — II",
                 "category": "tfe",
                 "categoryLabel": "TFE"
             },
             {
-                "image": "assets/img/tfe/tfe3.jpg",
+                "image": "assets\/img\/tfe\/tfe3.jpg",
                 "title": "Série TFE — III",
                 "category": "tfe",
                 "categoryLabel": "TFE"
             },
             {
-                "image": "assets/img/tfe/tfe4.jpg",
+                "image": "assets\/img\/tfe\/tfe4.jpg",
                 "title": "Série TFE — IV",
                 "category": "tfe",
                 "categoryLabel": "TFE"
             },
             {
-                "image": "assets/img/tfe/tfe5.jpg",
+                "image": "assets\/img\/tfe\/tfe5.jpg",
                 "title": "Série TFE — V",
                 "category": "tfe",
                 "categoryLabel": "TFE"
             },
             {
-                "image": "assets/img/tfe/tfe6.jpg",
+                "image": "assets\/img\/tfe\/tfe6.jpg",
                 "title": "Série TFE — VI",
                 "category": "tfe",
                 "categoryLabel": "TFE"
             },
             {
-                "image": "assets/img/tfe/tfe7.jpg",
-                "title": "Série TFE — VII",
-                "category": "tfe",
-                "categoryLabel": "TFE"
-            },
-            {
-                "image": "assets/img/tfe/tfe8.jpg",
+                "image": "assets\/img\/tfe\/tfe8.jpg",
                 "title": "Série TFE — VIII",
                 "category": "tfe",
                 "categoryLabel": "TFE"
             },
             {
-                "image": "assets/img/tfe/tfe9.jpg",
+                "image": "assets\/img\/tfe\/tfe9.jpg",
                 "title": "Série TFE — IX",
                 "category": "tfe",
                 "categoryLabel": "TFE"
             },
             {
-                "image": "assets/img/tfe/tfe10.jpg",
+                "image": "assets\/img\/tfe\/tfe10.jpg",
                 "title": "Série TFE — X",
                 "category": "tfe",
                 "categoryLabel": "TFE"
             },
             {
-                "image": "assets/img/street/street1.jpg",
+                "image": "assets\/img\/street\/street1.jpg",
                 "title": "Street — I",
                 "category": "street",
                 "categoryLabel": "Street Photo"
             },
             {
-                "image": "assets/img/street/street2.jpg",
+                "image": "assets\/img\/street\/street2.jpg",
                 "title": "Street — II",
                 "category": "street",
                 "categoryLabel": "Street Photo"
+            },
+            {
+                "image": "assets\/img\/paysage\/26370F32-4011-47E3-9422-17250E8BCD15.jpg",
+                "title": "26370F32 4011 47E3 9422 17250E8BCD15",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/paysage\/65BAB83E-2F62-4008-996A-1E876150C908.jpg",
+                "title": "65BAB83E 2F62 4008 996A 1E876150C908",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/paysage\/67C6106D-8EBB-4CC9-AAA6-C28710EA27FB.jpg",
+                "title": "67C6106D 8EBB 4CC9 AAA6 C28710EA27FB",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/paysage\/BA713CC0-78B1-4135-8005-F1B35109EF2E.jpg",
+                "title": "BA713CC0 78B1 4135 8005 F1B35109EF2E",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/paysage\/C4BE0AE3-D434-468F-A7C7-BB0F15EFF6CC.jpg",
+                "title": "C4BE0AE3 D434 468F A7C7 BB0F15EFF6CC",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/paysage\/CF18B2C8-F50D-4D8E-9B89-B639EC4BF801.jpg",
+                "title": "CF18B2C8 F50D 4D8E 9B89 B639EC4BF801",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/paysage\/E2FEA8F9-12A4-42FD-BCF4-316DE04121F0.jpg",
+                "title": "E2FEA8F9 12A4 42FD BCF4 316DE04121F0",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/paysage\/E965C60C-0DAF-4389-BE3D-EB28AA6445CE.jpg",
+                "title": "E965C60C 0DAF 4389 BE3D EB28AA6445CE",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/paysage\/E9862AF8-B766-4512-9BDA-23669196CAF9.jpg",
+                "title": "E9862AF8 B766 4512 9BDA 23669196CAF9",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/paysage\/F55DE781-D586-424B-B149-2F7B7E53D684.jpg",
+                "title": "F55DE781 D586 424B B149 2F7B7E53D684",
+                "category": "paysage",
+                "categoryLabel": "Paysage"
             }
         ]
     },
@@ -201,7 +259,7 @@
                     "Mon travail photographique part d'une conviction : le réel n'a pas besoin d'être embelli pour être puissant. Je cherche dans la rue, dans les visages, dans les situations du quotidien, cette tension entre le banal et l'extraordinaire qui fait la force de l'image documentaire.",
                     "Chaque série naît d'une immersion. Je ne photographie pas de l'extérieur — je m'inscris dans le contexte, je prends le temps de comprendre les espaces et les personnes avant de déclencher. Cette patience est au coeur de ma pratique."
                 ],
-                "image": "assets/img/street/street1.jpg",
+                "image": "assets\/img\/street\/street1.jpg",
                 "imageAlt": "Approche documentaire",
                 "reverse": false
             },
@@ -212,7 +270,7 @@
                     "Le portrait est pour moi un acte de confiance. Qu'il soit posé en studio ou saisi sur le vif dans la rue, il raconte toujours deux histoires : celle du sujet et celle de la relation qui s'établit entre nous au moment de la prise de vue.",
                     "En mode, je cherche à dépasser la surface esthétique pour atteindre quelque chose de plus brut, de plus vrai. Le vêtement devient un langage, mais c'est le regard qui fait la photo."
                 ],
-                "image": "assets/img/tfe/tfe3.jpg",
+                "image": "assets\/img\/tfe\/tfe3.jpg",
                 "imageAlt": "Portrait mode",
                 "reverse": true
             },
@@ -223,7 +281,7 @@
                     "Le reportage photo est l'extension naturelle de ma pratique street. Sur le terrain, l'image fixe et la vidéo se complètent pour construire un récit plus complet. Je documente des réalités souvent invisibles, avec le souci constant de respecter les personnes et les contextes que je traverse.",
                     "Chaque reportage est une immersion — parfois longue — qui produit un corpus d'images pensé comme un ensemble cohérent, pas une collection de clichés isolés."
                 ],
-                "image": "assets/img/street/street2.jpg",
+                "image": "assets\/img\/street\/street2.jpg",
                 "imageAlt": "Reportage terrain",
                 "reverse": false
             }
