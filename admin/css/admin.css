@@ -1040,3 +1040,17 @@ hr.divider {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* Lien retour au site sur la page de connexion */
+.login-back {
+  display: block;
+  text-align: center;
+  margin-top: 22px;
+  font-family: var(--font-head);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  transition: color 0.2s;
+}
+.login-back:hover { color: var(--accent-light); }

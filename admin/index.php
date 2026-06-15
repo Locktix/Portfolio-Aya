@@ -114,6 +114,8 @@ if (!$logged_in) {
 
     <button class="login-btn" id="login-btn">ACCÉDER</button>
 
+    <a href="../index.html" class="login-back">← Retour au site</a>
+
   </div>
 </div>
 
