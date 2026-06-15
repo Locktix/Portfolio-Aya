@@ -1015,3 +1015,21 @@ hr.divider {
 .picker-thumb:hover { border-color: var(--accent); }
 .picker-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .picker-empty { padding: 24px 4px; color: var(--muted); font-size: 13px; }
+
+/* ── Mobile : composants ajoutés (picker, catégories, coordonnées) ───────── */
+@media (max-width: 640px) {
+  .img-field { flex-direction: column; }
+  .img-field-preview { width: 100%; height: 160px; }
+
+  .cat-row { flex-wrap: wrap; }
+  .cat-slug { min-width: 0; }
+  .cat-label-input { flex: 1 1 100%; order: 3; }
+  .cat-add { flex-direction: column; align-items: stretch; }
+
+  .detail-row { flex-wrap: wrap; }
+  .detail-row .form-input,
+  .detail-row .form-select { width: 100% !important; flex: 1 1 100%; }
+
+  .modal { max-height: 92vh; }
+  .picker-cat-grid { grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); }
+}
