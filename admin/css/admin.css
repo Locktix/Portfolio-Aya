@@ -845,9 +845,48 @@ hr.divider {
 }
 
 /* ── Responsive hints ─────────────────────────────────────── */
+/* ── Drawer mobile (sidebar repliable) ───────────────────── */
+.sidebar-toggle {
+  display: none;          /* visible seulement en mobile (media query) */
+  position: fixed;
+  top: 12px; left: 12px;
+  z-index: 110;
+  width: 42px; height: 42px;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  color: var(--text);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+.sidebar-backdrop {
+  display: none;          /* activé en mobile */
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(2, 2, 6, 0.6);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease);
+}
+.sidebar-backdrop.show { opacity: 1; pointer-events: auto; }
+
 @media (max-width: 900px) {
   .form-grid, .form-grid-3 { grid-template-columns: 1fr; }
-  .admin-main { padding: 28px 24px 80px; }
+  .admin-main { margin-left: 0; padding: 64px 20px 80px; }
+
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s var(--ease);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  }
+  .sidebar.open { transform: none; }
+
+  .sidebar-toggle  { display: flex; }
+  .sidebar-backdrop { display: block; }
 }
 
 /* ── Utilities ───────────────────────────────────────────── */

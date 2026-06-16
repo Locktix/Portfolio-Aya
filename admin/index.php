@@ -34,6 +34,10 @@ if (!$logged_in) {
 <!-- ═══════════════════ ADMIN PANEL ═══════════════════ -->
 <div class="admin-layout">
 
+  <!-- Bouton drawer (mobile) + backdrop -->
+  <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
   <!-- Sidebar -->
   <aside class="sidebar">
 

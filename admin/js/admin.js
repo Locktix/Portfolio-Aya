@@ -1282,9 +1282,29 @@ async function init() {
 
   setupImageFieldDelegation();
 
-  // Nav clicks
+  // Drawer mobile (sidebar repliable)
+  const sidebarEl  = document.querySelector('.sidebar');
+  const toggleBtn  = document.getElementById('sidebar-toggle');
+  const backdropEl = document.getElementById('sidebar-backdrop');
+  const closeDrawer = () => {
+    sidebarEl.classList.remove('open');
+    backdropEl.classList.remove('show');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+  };
+  const openDrawer = () => {
+    sidebarEl.classList.add('open');
+    backdropEl.classList.add('show');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+  };
+  toggleBtn.addEventListener('click', () =>
+    sidebarEl.classList.contains('open') ? closeDrawer() : openDrawer()
+  );
+  backdropEl.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+  // Nav clicks (referme le drawer après navigation sur mobile)
   document.querySelectorAll('.nav-item').forEach(el => {
-    el.addEventListener('click', e => { e.preventDefault(); navigate(el.dataset.section); });
+    el.addEventListener('click', e => { e.preventDefault(); navigate(el.dataset.section); closeDrawer(); });
   });
 
   // Logout
