@@ -52,6 +52,31 @@ function valid_category($cat) {
     return is_dir(ASSETS_IMG_PATH . $cat);
 }
 
+// Synchronise les balises og:image / twitter:image des pages HTML avec l'image
+// du héro (accueil > hero > image). Évite que l'aperçu de partage réseaux sociaux
+// reste figé sur une ancienne image quand le héro change via l'admin.
+function sync_og_image($content) {
+    $hero = $content['accueil']['hero']['image'] ?? '';
+    if ($hero === '') return;
+    $url   = rtrim(SITE_URL, '/') . '/' . ltrim($hero, '/');
+    $root  = dirname(__DIR__);
+    $pages = ['index.html', 'galerie.html', 'demarche.html', 'parcours.html', 'contact.html'];
+    foreach ($pages as $page) {
+        $file = $root . '/' . $page;
+        if (!is_file($file)) continue;
+        $html = file_get_contents($file);
+        if ($html === false) continue;
+        $new = preg_replace_callback(
+            '/(<meta (?:property="og:image"|name="twitter:image") content=")[^"]*(">)/',
+            function ($m) use ($url) { return $m[1] . htmlspecialchars($url, ENT_QUOTES) . $m[2]; },
+            $html
+        );
+        if ($new !== null && $new !== $html) {
+            file_put_contents($file, $new);
+        }
+    }
+}
+
 // ── Login (pas besoin d'être authentifié) ──────────────────────────────────
 if ($action === 'login') {
     $input    = json_decode(file_get_contents('php://input'), true);
@@ -117,6 +142,8 @@ switch ($action) {
             unlink($tmp);
             json_err('Erreur remplacement fichier', 500);
         }
+        // Garde l'aperçu de partage réseaux sociaux aligné sur le héro courant.
+        sync_og_image($input['content']);
         json_ok();
 
     // ── Upload image ───────────────────────────────────────────────────────

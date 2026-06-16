@@ -23,6 +23,10 @@ define('LOGIN_LOCK_SECONDS', 900);
 define('CONTENT_JSON_PATH', dirname(__DIR__) . '/content.json');
 define('ASSETS_IMG_PATH',   dirname(__DIR__) . '/assets/img/');
 
+// URL publique du site (sert à construire les balises og:image / twitter:image
+// pour l'aperçu de partage sur les réseaux sociaux).
+define('SITE_URL', 'https://aya.veldor.be/');
+
 // Catégories système (cibles d'upload hors galerie : héro, intro, blocs démarche).
 // Non supprimables. Les catégories de galerie sont gérées dynamiquement
 // (un dossier sous assets/img/ = une catégorie valide), voir valid_category() dans api.php.

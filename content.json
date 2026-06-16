@@ -28,7 +28,7 @@
     },
     "accueil": {
         "hero": {
-            "image": "assets\/img\/paysage\/C4BE0AE3-D434-468F-A7C7-BB0F15EFF6CC.jpg",
+            "image": "assets\/img\/portrait\/DSC08538.jpg",
             "watermark": "DOCUMENTAIRE",
             "name": "AYAA",
             "subtitle": "Photographie Documentaire & Street",
@@ -240,6 +240,48 @@
                 "title": "F55DE781 D586 424B B149 2F7B7E53D684",
                 "category": "paysage",
                 "categoryLabel": "Paysage"
+            },
+            {
+                "image": "assets\/img\/portrait\/DSC08542.jpg",
+                "title": "DSC08542",
+                "category": "portrait",
+                "categoryLabel": "Portrait & Nature Morte"
+            },
+            {
+                "image": "assets\/img\/portrait\/DSC08538.jpg",
+                "title": "DSC08538",
+                "category": "portrait",
+                "categoryLabel": "Portrait & Nature Morte"
+            },
+            {
+                "image": "assets\/img\/portrait\/DSC08496.jpg",
+                "title": "DSC08496",
+                "category": "portrait",
+                "categoryLabel": "Portrait & Nature Morte"
+            },
+            {
+                "image": "assets\/img\/portrait\/DSC08485.jpg",
+                "title": "DSC08485",
+                "category": "portrait",
+                "categoryLabel": "Portrait & Nature Morte"
+            },
+            {
+                "image": "assets\/img\/portrait\/DSC08481.jpg",
+                "title": "DSC08481",
+                "category": "portrait",
+                "categoryLabel": "Portrait & Nature Morte"
+            },
+            {
+                "image": "assets\/img\/portrait\/DSC08477.jpg",
+                "title": "DSC08477",
+                "category": "portrait",
+                "categoryLabel": "Portrait & Nature Morte"
+            },
+            {
+                "image": "assets\/img\/portrait\/DSC08437.jpg",
+                "title": "DSC08437",
+                "category": "portrait",
+                "categoryLabel": "Portrait & Nature Morte"
             }
         ]
     },
